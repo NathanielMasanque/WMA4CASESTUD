@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Maps at Upper Right</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            font-size: small;
+        }
+
+  
+        .maps-container {
+            display: flex;
+            flex-direction: column; 
+            position: absolute;
+            top: 100px;  
+            right: 100px; 
+            gap: 1px; 
+            z-index: 1000; 
+        }
+
+
+        .map-frame {
+            width: 200px;   
+            height: 100px; 
+            border: 2px solid black; 
+            border-radius: 10px;
+            margin-bottom: 5px;
+        }
+
+ 
+        @media (max-width: 768px) {
+            .maps-container {
+                top: 10px; 
+                right: 10px; 
+                width: 90%; 
+                gap: 10px;  
+            }
+            .map-frame {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>ReLoved</h1>
+
+
+<div class="maps-container">
+    <h3>ReLoved - San Isidro</h3>
+    <div id="map1" class="map-frame"></div>
+    <h3>ReLoved - Lucinda</h3>
+    <div id="map2" class="map-frame"></div>
+    <h3>ReLoved - Main</h3>
+    <div id="map3" class="map-frame"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    function initializeMap(mapId, lat, lng, title) {
+        var map = L.map(mapId).setView([lat, lng], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        var marker = L.marker([lat, lng]).addTo(map);
+        marker.bindPopup('<h3>' + title + '</h3>');
+    }
+    initializeMap('map1', 15.503646, 120.579177, "TSU San Isidro"); 
+    initializeMap('map2', 15.470013, 120.620019, "TSU Lucinda"); 
+    initializeMap('map3', 15.485505, 120.586967, "TSU Main"); 
+</script>
+</body>
+</html>

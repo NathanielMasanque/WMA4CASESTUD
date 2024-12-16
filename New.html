@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReLoved</title>
+
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="CASE_STUDY.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            font-size: small;
+        }
+
+        /* Visit Us Section */
+        .visit-us-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .maps-container {
+            display: flex; /* Change to flex to arrange maps horizontally */
+            justify-content: space-between; /* Space out the maps */
+            width: 100%; /* Full width */
+        }
+
+        .map-frame {
+            width: 30%; /* Adjust width to fit three maps */
+            height: 200px; /* Set height for the maps */
+            border: 2px solid black; 
+            border-radius: 10px;
+            margin: 10px; /* Add some margin */
+        }
+
+        .branch-names {
+            display: flex;
+            justify-content: space-between;
+            width: 100%; /* Full width */
+            margin-top: 10px; /* Add some space above */
+        }
+
+        .branch-name {
+            text-align: center;
+            width: 30%; /* Same width as map frames */
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .maps-container {
+                flex-direction: column; /* Stack maps vertically on smaller screens */
+            }
+            .map-frame {
+                width: 100%; /* Full width on mobile */
+                height: 200px; /* Keep height consistent */
+            }
+
+            .branch-names {
+                flex-direction: column; /* Stack branch names vertically */
+                align-items: center; /* Center align */
+            }
+
+            .branch-name {
+                width: auto; /* Allow full width for branch names */
+            }
+        }
+
+        /* Other styles can go here */
+    </style>
+</head>
+<body>
+
+<!-- Header Navbar -->
+<header>
+    <a href="#" class="logo">
+        <img src="1.png" alt="">
+    </a>
+    <i class='bx bx-menu' id="menu-icon"></i>
+    
+    <ul class="navbar">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#products">Featured</a></li>
+        <li><a href="#Contact">Contact Us</a></li>
+    </ul>
+
+    <div class="header-icon">
+        <i class="bx bx-cart-alt"></i>
+        <i class="bx bx-search" id="search-icon"></i>
+    </div>
+    <div class="search-box">
+        <input type="search" placeholder="Search Product">
+    </div>
+</header>
+
+<!-- Home section --> 
+<section class="home" id="home">
+    <div class="home-text">
+        <h1>ReLoved Fashion Finds</h1>
+        <p class="p1" id="p1">Embrace yourself, and Embrace your uniqueness.</p>
+        <a href="#products" class="btn">Shop Now</a>
+    </div>
+    <div class="home-img"></div>
+</section>
+
+<!-- Visit Us Section -->
+<div class="visit-us-container">
+    <h2>Visit Us</h2>
+    <div class="maps-container" id="maps">
+        <div id="map1" class="map-frame"></div>
+        <div id="map2" class="map-frame"></div>
+        <div id="map3" class="map-frame"></div>
+    </div>
+    <div class="branch-names">
+        <div class="branch-name">San Isidro Branch</div>
+        <div class="branch-name">Main Branch</div>
+        <div class="branch-name">Lucinda Branch</div>
+    </div>
+</div>
+
+<!-- About section -->
+<section class="about" id="about">
+    <div class="about-img">
+        <img src="about.jpg" alt="">
+    </div>
+    <div class="about-text">
+        <h2>About ReLoved Fashion</h2>
+        <p>At ReLoved Fashion, we're more than a store – we're your style accomplice.</p>
+        <p>Our mission is simple: celebrate individuality through fashion.</p>
+        <p>From trendy essentials to timeless classics, we curate styles that speak volumes.</p>
+        <a href="#" class="btn">Learn More</a>
+    </div>
+</section>
+
+<!-- Product Section -->
+<section class="products-container" id="products">
+    <div class="products-container-title"><h2>Featured Products</h2></div>
+    <div class="heading">
+        <!-- Container for products -->
+        <!-- Product boxes go here -->
+    </div>
+</section>
+
+<!-- FOOTER SECTION -->
+<section class="footer" id="Contact">
+    <div class="footer-box">
+        <h3>Visit Us</h3>
+        <div class="social">
+            <a href="#"><img src="email.png" alt=""></a>
+            <a href="#"><img src="facebook-app-symbol.png" alt=""></a>
+            <a href="#"><img src="instagram.png" alt=""></a>
+            <a href="#"><img src="contact-mail.png" alt=""></a>
+        </div>
+    </div>
+    <div class="footer-box">
+        <h3>Support</h3>
+        <li><a href="#">Product</a></li>
+        <li><a href="#">Help & Support</a></li>
+        <li><a href="#">Return Policy</a></li>
+        <li><a href="#">Terms Of Use</a></li>
+    </div>
+
+    <div class="footer-box">
+        <h3>Contact</h3>
+        <div class="contact">
+            <span><i class="bx bxs-map"></i>Tarlac State University, San Isidro Campus</span><br>
+            <span><i class="bx bxs-phone"></i>+63 912-345-6789</span><br>
+            <span><i class="bx bxs-envelope"></i>ReLoved@shop.com</span>
+        </div>
+    </div>      
+</section>
+
+<!-- COPYRIGHT -->
+<div class="copyright">
+    <p>&copy; 2023 ReLoved Fashion</p>
+</div>
+
+<!-- JavaScript -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    function initializeMap(mapId, lat, lng, title) {
+        var map = L.map(mapId).setView([lat, lng], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        var marker = L.marker([lat, lng]).addTo(map);
+        marker.bindPopup('<h3>' + title + '</h3>');
+    }
+
+    // Initialize maps
+    initializeMap('map1', 15.503646, 120.579177, "TSU San Isidro"); 
+    initializeMap('map2', 15.485505, 120.586967, "TSU Main"); 
+    initializeMap('map3', 15.470013, 120.620019, "TSU Lucinda"); 
+</script>
+</body>
+</html>

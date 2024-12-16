@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReLoved</title>
+
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="CASE_STUDY.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            font-size: small;
+        }
+
+        /* Visit Us Section */
+        .visit-us-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .maps-container {
+            display: flex; 
+            justify-content: space-between; 
+            width: 100%; 
+        }
+
+        .map-frame {
+            width: 30%; 
+            height: 200px; 
+            border: 2px solid black; 
+            border-radius: 10px;
+            margin: 10px; 
+        }
+
+        .branch-names {
+            display: flex;
+            justify-content: space-between;
+            width: 100%; 
+            margin-top: 10px; 
+        }
+
+        .branch-name {
+            text-align: center;
+            width: 30%; 
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .maps-container {
+                flex-direction: column; 
+            }
+            .map-frame {
+                width: 100%; 
+                height: 200px; 
+            }
+
+            .branch-names {
+                flex-direction: column; 
+                align-items: center; 
+            }
+
+            .branch-name {
+                width: auto; 
+            }
+        }
+
+        /* Product Section */
+        .products-container {
+            padding: 20px;
+        }
+
+        .product-item {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            text-align: center;
+            width: 180px;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .btn-add-to-cart {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .cart-dropdown {
+            display: none;
+            position: absolute;
+            top: 30px;
+            right: 0;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-dropdown ul {
+            list-style: none;
+            padding: 10px;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .cart-dropdown li {
+            padding: 5px 0;
+        }
+
+        /* Other styles can go here */
+    </style>
+</head>
+<body>
+
+<!-- Header Navbar -->
+<header>
+    <a href="#" class="logo">
+        <img src="1.png" alt="">
+    </a>
+
+    <ul class="navbar">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#products">Featured</a></li>
+        <li><a href="#Contact">Contact Us</a></li>
+    </ul>
+
+    <div class="header-icon">
+        <i class="bx bx-cart-alt" id="cart-icon"></i>
+        <i class="bx bx-search" id="search-icon"></i>
+    </div>
+    <div class="search-box">
+        <input type="search" placeholder="Search Product">
+    </div>
+</header>
+
+<!-- Cart Dropdown -->
+<div class="cart-dropdown" id="cart-dropdown">
+    <h3>Your Cart</h3>
+    <ul id="cart-items"></ul>
+    <p id="total-price">Total: $0.00</p>
+</div>
+
+<!-- Home section --> 
+<section class="home" id="home">
+    <div class="home-text">
+        <h1>ReLoved</h1>
+        <p class="p1" id="p1">Wear the Past, Love the Present</p>
+        <a href="#products" class="btn">Shop Now</a>
+    </div>
+    <div class="home-img"></div>
+</section>
+
+
+
+<!-- About section -->
+<section class="about" id="about">
+    <div class="about-img">
+        <img src="about.jpg" alt="">
+    </div>
+    <div class="about-text">
+        <h2>About ReLoved Fashion</h2>
+        <p>YOU’RE NOT JUST BUYING CLOTHES; </p>
+        <p>YOU’RE MAKING A CONSCIOUS CHOICE TO REDUCE FASHION WASTE </p>
+        <p></p>AND EMBRACE A MORE SUSTAINABLE LIFESTYLE.
+        
+    </div>
+</section>
+
+<!-- Product Section -->
+<section class="products-container" id="products">
+    <div class="products-container-title"><h2>Featured Products</h2></div>
+    <div class="heading">
+        <!-- Updated to 14 products -->
+        <div class="product-item">
+            <img src="product1.jpg" alt="Product 1">
+            <h3>Stylish Shirt</h3>
+            <p>Price: $25.00</p>
+            <p>Comfortable and stylish shirt for all occasions.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Stylish Shirt', 25)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product2.jpg" alt="Product 2">
+            <h3>Classic Jeans</h3>
+            <p>Price: $40.00</p>
+            <p>Durable jeans that never go out of style.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Classic Jeans', 40)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product3.jpg" alt="Product 3">
+            <h3>Leather Jacket</h3>
+            <p>Price: $120.00</p>
+            <p>Stylish leather jacket for a bold look.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Leather Jacket', 120)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product4.jpg" alt="Product 4">
+            <h3>Summer Dress</h3>
+            <p>Price: $35.00</p>
+            <p>Light and breezy dress perfect for summer.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Summer Dress', 35)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product5.jpg" alt="Product 5">
+            <h3>Casual Sneakers</h3>
+            <p>Price: $50.00</p>
+            <p>Comfortable sneakers for everyday wear.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Casual Sneakers', 50)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product6.jpg" alt="Product 6">
+            <h3>Wool Scarf</h3>
+            <p>Price: $20.00</p>
+            <p>Warm scarf for chilly days.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Wool Scarf', 20)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product7.jpg" alt="Product 7">
+            <h3>Sport Watch</h3>
+            <p>Price: $80.00</p>
+            <p>Stylish watch for the active lifestyle.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Sport Watch', 80)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product8.jpg" alt="Product 8">
+            <h3>Elegant Handbag</h3>
+            <p>Price: $60.00</p>
+            <p>Chic handbag for any outfit.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Elegant Handbag', 60)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product9.jpg" alt="Product 9">
+            <h3>Graphic T-Shirt</h3>
+            <p>Price: $30.00</p>
+            <p>Fun and trendy graphic tee.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Graphic T-Shirt', 30)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product10.jpg" alt="Product 10">
+            <h3>Denim Jacket</h3>
+            <p>Price: $55.00</p>
+            <p>Classic denim jacket for all seasons.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Denim Jacket', 55)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product11.jpg" alt="Product 11">
+            <h3>Floral Skirt</h3>
+            <p>Price: $45.00</p>
+            <p>Beautiful floral skirt for a chic look.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Floral Skirt', 45)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product12.jpg" alt="Product 12">
+            <h3>Winter Coat</h3>
+            <p>Price: $150.00</p>
+            <p>Warm winter coat for cold weather.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Winter Coat', 150)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product13.jpg" alt="Product 13">
+            <h3>Party Dress</h3>
+            <p>Price: $75.00</p>
+            <p>Perfect dress for special occasions.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Party Dress', 75)">Add to Cart</button>
+        </div>
+        <div class="product-item">
+            <img src="product14.jpg" alt="Product 14">
+            <h3>Running Shoes</h3>
+            <p>Price: $65.00</p>
+            <p>Lightweight running shoes for your workouts.</p>
+            <button class="btn-add-to-cart" onclick="addToCart('Running Shoes', 65)">Add to Cart</button>
+        </div>
+    </div>
+</section>
+
+<!-- Visit Us Section -->
+<div class="visit-us-container">
+    <h2>Visit Us</h2>
+    <div class="maps-container" id="maps">
+        <div id="map1" class="map-frame"></div>
+        <div id="map2" class="map-frame"></div>
+        <div id="map3" class="map-frame"></div>
+    </div>
+    <div class="branch-names">
+        <div class="branch-name">San Isidro Branch</div>
+        <div class="branch-name">Main Branch</div>
+        <div class="branch-name">Lucinda Branch</div>
+    </div>
+</div>
+
+
+<!-- FOOTER SECTION -->
+<section class="footer" id="Contact">
+    
+    <div class="footer-box">
+        <h3>Support</h3>
+        <li><a href="#">Product</a></li>
+        <li><a href="#">Help & Support</a></li>
+        <li><a href="#">Return Policy</a></li>
+        <li><a href="#">Terms Of Use</a></li>
+    </div>
+
+    <div class="footer-box">
+        <h3>Contact</h3>
+        <div class="contact">
+            <span><i class="bx bxs-map"></i>Tarlac State University, San Isidro Campus</span><br>
+            <span><i class="bx bxs-phone"></i>+63 912-345-6789</span><br>
+            <span><i class="bx bxs-envelope"></i>ReLoved@shop.com</span>
+        </div>
+    </div>      
+</section>
+
+<!-- COPYRIGHT -->
+<div class="copyright">
+    <p>&copy; 2023 ReLoved Fashion</p>
+</div>
+
+<!-- JavaScript -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    function initializeMap(mapId, lat, lng, title) {
+        var map = L.map(mapId).setView([lat, lng], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        var marker = L.marker([lat, lng]).addTo(map);
+        marker.bindPopup('<h3>' + title + '</h3>');
+    }
+
+    // Initialize maps
+    initializeMap('map1', 15.503646, 120.579177, "TSU San Isidro"); 
+    initializeMap('map2', 15.485505, 120.586967, "TSU Main"); 
+    initializeMap('map3', 15.470013, 120.620019, "TSU Lucinda"); 
+
+    // Cart functionality
+    let cart = [];
+    let totalPrice = 0;
+
+    async function addToCart(productName, productPrice) {
+    cart.push({ name: productName, price: productPrice });
+    totalPrice += productPrice;
+    updateCartDisplay();
+
+    // Send the cart item to the server
+    try {
+        const response = await fetch('addToCart.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `product_name=${encodeURIComponent(productName)}&product_price=${productPrice}`
+        });
+        
+        const result = await response.json();
+        console.log(result.message);
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+    }
+}
+    function updateCartDisplay() {
+        const cartItems = document.getElementById('cart-items');
+        cartItems.innerHTML = '';
+        cart.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+            cartItems.appendChild(li);
+        });
+        document.getElementById('total-price').textContent = `Total: $${totalPrice.toFixed(2)}`;
+    }
+
+    // Toggle cart dropdown
+    document.getElementById('cart-icon').onclick = () => {
+        const cartDropdown = document.getElementById('cart-dropdown');
+        cartDropdown.style.display = cartDropdown.style.display === 'block' ? 'none' : 'block';
+    };
+
+    // Hide cart dropdown when clicking outside
+    window.onclick = (event) => {
+        const cartDropdown = document.getElementById('cart-dropdown');
+        if (!event.target.matches('#cart-icon') && !cartDropdown.contains(event.target)) {
+            cartDropdown.style.display = 'none';
+        }
+    };
+
+    // Search and menu toggle functionality
+    let search = document.querySelector('.search-box');
+
+    document.querySelector('#search-icon').onclick = () => {
+        search.classList.toggle('active');
+    }
+
+    let navbar = document.querySelector('.navbar');
+
+    document.querySelector('#menu-icon').onclick = () => {
+        navbar.classList.toggle('active');
+        search.classList.remove('active');
+    }
+
+    window.onscroll = () => {
+        navbar.classList.remove('active');
+        search.classList.remove('active');
+    }
+
+    let header = document.querySelector('header');
+
+    window.addEventListener('scroll', () => {
+        header.classList.toggle('shadow', window.scrollY > 0);
+    });
+
+    async function loadProducts() {
+        try {
+            const response = await fetch('fetch_products.php');
+            const products = await response.json();
+            const productsContainer = document.getElementById('products');
+
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.classList.add('product-item');
+                productDiv.innerHTML = `
+                    <img src="${product.image_url}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>Price: $${product.price}</p>
+                    <p>${product.description}</p>
+                    <button class="btn-add-to-cart" onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+                `;
+                productsContainer.appendChild(productDiv);
+            });
+        } catch (error) {
+            console.error('Error loading products:', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProducts);
+</script>
+</body>
+</html>
